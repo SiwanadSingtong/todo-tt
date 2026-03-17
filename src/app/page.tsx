@@ -13,7 +13,12 @@ export default function Home() {
   const { todos, loading, error } = useTodo();
   
   const handleClose = () => setIsModalOpen(false);
-  console.log("🚀 ~ Home ~ todos:", todos);
+
+  const filteredTodos = todos.filter((t) => {
+    if (filter === "active") return !t.completed;
+    if(filter === "completed") return t.completed
+    return true;
+  })
 
   return (
     <main className="py-12 max-w-2xl mx-auto flex flex-col gap-12">
@@ -85,9 +90,9 @@ export default function Home() {
         ) : (
           <div className="flex flex-col gap-4 w-full">
             <p className="text-xs font-medium text-black/60">
-              You have {todos.length} {todos.length > 1 ? "tasks" : "task"} todo
+              You have {filteredTodos.length} {filteredTodos.length > 1 ? "tasks" : "task"} todo
             </p>
-            {todos.map((t) => (
+            {filteredTodos.map((t) => (
               <TodoCard key={t.id} todo={t} />
             ))}
           </div>
