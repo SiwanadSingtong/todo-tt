@@ -1,13 +1,18 @@
 "use client";
 
+import TodoCard from "@/components/TodoCard";
+import { useTodo } from "@/context/TodoContext";
 import { Button } from "@mui/material";
-import { ListTodo, PlusIcon } from "lucide-react";
+import { ListTodo, LoaderCircle, PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
-  const [todos] = useState([])
+  const [loader] = useState(true);
+
+  const { todos, loading, error } = useTodo();
+  console.log("🚀 ~ Home ~ todos:", todos);
 
   return (
     <main className="py-12 max-w-2xl mx-auto flex flex-col gap-12">
@@ -64,10 +69,23 @@ export default function Home() {
       </div>
       {/* TASK */}
       <div className="flex items-center justify-center">
-        {todos.length === 0 && (
+        {loading ? (
+          // Loading
+          <div className="w-full flex items-center justify-center h-56">
+            <LoaderCircle size={32} className="animate-spin text-primary" />
+          </div>
+        ) : // Check empty
+        todos.length === 0 ? (
           <div className="w-full h-56 flex flex-col gap-2 items-center justify-center">
             <ListTodo size={48} strokeWidth={2.5} className="text-black/40" />
             <p className="text-md font-medium text-black/90">No tasks yet</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 w-full">
+            <p className="text-xs font-medium text-black/60">You have {todos.length} {todos.length > 1 ? "tasks" : "task"} todo</p>
+            {todos.map((t) => (
+              <TodoCard key={t.id} todo={t} />
+            ))}
           </div>
         )}
       </div>
