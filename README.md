@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo List — Front-End Developer Test
+
+เว็บแอปพลิเคชันสำหรับจัดการรายการที่ต้องทำ (Todo List)
+
+## Features
+
+- **View Todos** — ดึงข้อมูล mockup จาก JSONPlaceholder API เมื่อโหลดเข้าเว็บครั้งแรก
+- **Add Todo** — สร้างรายการใหม่ผ่านหน้าต่าง Modal (Add Task)
+- **Edit Todo** — แก้ไขชื่อรายการหรือสถานะความสำเร็จได้ทันที
+- **Delete Todo** — ลบรายการพร้อมระบบยินยันก่อนลบ
+- **Toggle Status** — สลับสถานะรายการระหว่าง "เสร็จสิน" หรือ "ยังไม่เสร็จสิ้น" ด้วย Checkbox
+- **Filter** — กรองรายการตามสถานะ: ทั้งหมด / กำลังทำ / เสร็จสิ้นแล้ว
+- **Loading & Error States** — แสดงตัวโหลดระหว่างดึงหรืออัพเดทข้อมูล และแสดงข้อความแจ้งเตือนเมื่อเกิดข้อผิดพลาด
+- **Toast Notifications** — ระบบแจ้งเตือนขนาดเล็ก เพื่อบอกผลลัพธ์การทำรายการ
+
+## Tech Stack
+
+| Tool | Purpose | Reason |
+|------|---------|--------|
+| [Next.js 16](https://nextjs.org/) | React framework | ระบบมาตรฐาน รองรับ TypeScript และมีระบบ App Router ในตัว |
+| [React Context API](https://react.dev/reference/react/createContext) | State management | จัดการ state ลดความซับซ้อนในการส่ง Props แบบง่าย ไม่ต้องติดตั้ง library เพิ่มเติม |
+| [Axios](https://axios-http.com/) | HTTP client | รองรับระบบ Interceptor เพื่อจัดการข้อผิดพลาด |
+| [MUI (Material UI)](https://mui.com/) | UI components | มี component ให้พร้อมใช้งาน (เช่น Dialog, Button, Checkbox) |
+| [Tailwind CSS v4](https://tailwindcss.com/) | Styling | CSS Framework แบบ Utility ช่วยให้การออกแบบหน้าเว็บทำได้สะดวกขึ้น |
+| [notistack](https://notistack.com/) | Toast notifications | ระบบแจ้งเตือนขนาดเล็ก |
+| [Lucide React](https://lucide.dev/) | Icons | น้ำหนักเบา และมีดีไซน์ที่สอดคล้องกันทั้งชุด |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) (recommended)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# โคลนโปรเจคเข้ามายังเครื่อง
+git clone <repository-url>
+cd todo-tt
+
+# ติดตั้ง dependencies
+pnpm install
+
+# รันโปรเจคแบบ Developer จากนั้นเข้าถึงหน้าเว็บผ่าน localhost:3000
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด [http://localhost:3000](http://localhost:3000) ใน browser ของคุณ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Thought Process
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Architecture
 
-## Learn More
+โปรเจกต์นี้ถูกออกแบบโดยยึดหลักการแยกหน้าที่ความรับผิดชอบ (Separation of Concerns) อย่างชัดเจน:
 
-To learn more about Next.js, take a look at the following resources:
+1. **`libs/axios.ts`** — สร้าง Axios Instance เพื่อกำหนด Base URL และระบบ Interceptor เพื่อปรับรูปแบบข้อผิดพลาดจาก API ให้เป็น object เดียวกันก่อนส่งต่อไปยังส่วนอื่นๆ
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **`services/todoService.ts`** — รวบรวมการเรียก API ทั้งหมดไว้ในที่เดียว โดยจะไม่เรียกใช้ผ่าน Axios โดยตรง แต่จะผ่าน Service ก่อน ซึ่งช่วยในการจัดการ API ได้ง่าย
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **`context/TodoContext.tsx`** — เก็บ State ของรายการ Todo และส่งต่อฟังก์ชัน `createTodo`, `updateTodo` และ `deleteTodo` ไปยัง Component ต่างๆได้ง่าย โดยไม่จำเป็นต้องโหลดหน้าใหม่ทั้งหมด
 
-## Deploy on Vercel
+### UX Decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **ปุ่มจัดการรายการจะถูกซ่อนไว้เป็นค่าเริ่มต้น** และจะแสดงขึ้นมาเฉพาะเมื่อนำเมาส์ไปชี้ที่การ์ดนั้น ๆ (`group-hover`), เพื่อช่วยให้หน้ารายการดูสะอาดตาและไม่รกจนเกินไป
+- **สถานะการโหลดแยกตามการกระทำ** เช่น การกดบันทึกหรือการลบ จะมีการติดตามสถานะแยกกัน เพื่อให้ Spinner แสดงเฉพาะบนปุ่มหรือ Modal ที่เกี่ยวข้อง แทนที่จะล็อกการทำงานทั้งหน้าเว็บ
+- **แถบกรองข้อมูล** (ทั้งหมด / กำลังทำ / เสร็จสิ้นแล้ว) เพื่อให้ผู้ใช้จัดการรายการได้สะดวกขึ้นเมื่อมีจำนวนงานสะสมมากขึ้น
