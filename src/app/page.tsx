@@ -21,7 +21,7 @@ export default function Home() {
   })
 
   return (
-    <main className="py-12 max-w-2xl mx-auto flex flex-col gap-12">
+    <main className="py-12 px-4 md:px-0 max-w-2xl mx-auto flex flex-col gap-12">
       {/* HEADER */}
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center">
@@ -35,9 +35,9 @@ export default function Home() {
         </div>
       </div>
       {/* FILTERS AND ADD TASK */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
         {/* Filter */}
-        <div className="p-1 w-fit bg-[#f1f5f9] rounded-lg *:shadow-none! *:text-sm! *:transition-all! *:font-medium! *:duration-200! *:rounded-md!">
+        <div className="p-1 w-fit flex bg-[#f1f5f9] rounded-lg *:shadow-none! *:text-sm! *:transition-all! *:font-medium! *:duration-200! *:rounded-md!">
           <Button
             variant="contained"
             sx={{ textTransform: "none" }}
