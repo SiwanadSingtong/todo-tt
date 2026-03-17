@@ -1,3 +1,4 @@
+import { useTodo } from "@/context/TodoContext";
 import { TodoModalProps } from "@/types/todo";
 import {
   Button,
@@ -11,9 +12,47 @@ import {
   TextField,
 } from "@mui/material";
 import { Circle, CircleCheck, X } from "lucide-react";
-import React from "react";
+import { enqueueSnackbar, useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
 
-function TaskModal({ open, onClose }: TodoModalProps) {
+function TaskModal({ open, onClose, todo }: TodoModalProps) {
+  const { updateTodo, createTodo } = useTodo();
+  const isEdit = !!todo;
+
+  const [title, setTitle] = useState("");
+  const [completed, setCompleted] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setTitle(todo?.title ?? "");
+      setCompleted(todo?.completed ?? false);
+    }
+  }, [open, todo]);
+
+  //   SUBMIT
+  const handleSubmit = async () => {
+    if (!title.trim()) return;
+    try {
+      setSaving(true);
+      if (isEdit) {
+        await updateTodo(todo.id, { title, completed });
+        enqueueSnackbar("Update Successfully", { variant: "success" });
+      } else {
+        await createTodo({ title, completed });
+        enqueueSnackbar("Task Created Successfully", { variant: "success" });
+      }
+      onClose();
+    } catch {
+      enqueueSnackbar(
+        isEdit ? "Failed to update task" : "Failed to create task",
+        { variant: "error" },
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -30,7 +69,9 @@ function TaskModal({ open, onClose }: TodoModalProps) {
         }}
         className="border-b border-gray-200"
       >
-        <p className="text-xl font-semibold">Add new Task</p>
+        <p className="text-xl font-semibold tracking-tight">
+          {isEdit ? "Edit Task" : "Add New Task"}
+        </p>
         <IconButton onClick={onClose}>
           <X size={24} />
         </IconButton>
@@ -44,6 +85,8 @@ function TaskModal({ open, onClose }: TodoModalProps) {
             id="TaskName"
             placeholder="e.g. Watch Game of Thrones"
             fullWidth
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             size="small"
             sx={{
               "& .MuiOutlinedInput-root": {
@@ -67,9 +110,15 @@ function TaskModal({ open, onClose }: TodoModalProps) {
             control={
               <Checkbox
                 size="small"
+                checked={completed}
+                onChange={(e) => setCompleted(e.target.checked)}
                 icon={<Circle size={14} />}
                 checkedIcon={
-                  <CircleCheck size={14} className="text-primary!" />
+                  <CircleCheck
+                    size={14}
+                    strokeWidth={3}
+                    className="text-primary!"
+                  />
                 }
               />
             }
@@ -79,7 +128,7 @@ function TaskModal({ open, onClose }: TodoModalProps) {
         </div>
       </DialogContent>
 
-      <DialogActions className="mb-2">
+      <DialogActions className="mb-2 pr-6!">
         {/* CANCEL */}
         <Button
           variant="outlined"
@@ -107,8 +156,9 @@ function TaskModal({ open, onClose }: TodoModalProps) {
             fontWeight: 600,
             borderRadius: "8px",
           }}
+          onClick={handleSubmit}
         >
-          Create Task
+          {isEdit ? "Update Task" : "Create Task"}
         </Button>
       </DialogActions>
     </Dialog>
