@@ -1,6 +1,7 @@
 # Todo List — Front-End Developer Test
 
 เว็บแอปพลิเคชันสำหรับจัดการรายการที่ต้องทำ (Todo List)
+**Live Demo: ** [https://todo-tt-phi.vercel.app/](https://todo-tt-phi.vercel.app/)
 
 ## Features
 
@@ -30,9 +31,9 @@
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) >= 18
-- [pnpm](https://pnpm.io/) (recommended)
+- [pnpm](https://pnpm.io/) (แนะนำ)
 
-### Installation
+### การติดตั้ง
 
 ```bash
 # โคลนโปรเจคเข้ามายังเครื่อง
@@ -48,7 +49,7 @@ pnpm dev
 
 เปิด [http://localhost:3000](http://localhost:3000) ใน browser ของคุณ
 
-## Thought Process
+## แนวคิด
 
 ### Architecture
 
