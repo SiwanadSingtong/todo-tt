@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Circle, CircleCheck, X } from "lucide-react";
-import { enqueueSnackbar, useSnackbar } from "notistack";
+import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
 function TaskModal({ open, onClose, todo }: TodoModalProps) {
@@ -72,7 +72,7 @@ function TaskModal({ open, onClose, todo }: TodoModalProps) {
         <p className="text-xl font-semibold tracking-tight">
           {isEdit ? "Edit Task" : "Add New Task"}
         </p>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} size="small">
           <X size={24} />
         </IconButton>
       </DialogTitle>
@@ -122,7 +122,7 @@ function TaskModal({ open, onClose, todo }: TodoModalProps) {
                 }
               />
             }
-            label={<p className="text-sm font-semibold">Task is Completed?</p>}
+            label={<p className="text-xs font-semibold">Task is Completed?</p>}
             className="w-fit"
           />
         </div>

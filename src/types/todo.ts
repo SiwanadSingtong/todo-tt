@@ -25,6 +25,13 @@ export interface TodoModalProps {
   todo?: Todo | null;
 }
 
+export interface DeleteModalProps {
+  open: boolean;
+  onClose: () => void;
+  loading: boolean;
+  onConfirm: () => void;
+}
+
 export interface ConfirmModalProps {
   open: boolean;
   onClose: () => void;
