@@ -11,7 +11,7 @@ function TodoCard({ todo }: { todo: Todo }) {
           icon={<Circle size={20} />}
           checkedIcon={<CircleCheck size={20} className="text-primary!" />}
         />
-        {todo.title}
+        <p className={`text-lg font-medium ${todo.completed && "line-through text-black/40"}`}>{todo.title}</p>
       </div>
       <Ellipsis size={18} />
     </Box>

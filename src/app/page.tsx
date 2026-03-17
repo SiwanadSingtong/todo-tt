@@ -1,6 +1,7 @@
 "use client";
 
 import TodoCard from "@/components/TodoCard";
+import TaskModal from "@/components/ui/TaskModal";
 import { useTodo } from "@/context/TodoContext";
 import { Button } from "@mui/material";
 import { ListTodo, LoaderCircle, PlusIcon } from "lucide-react";
@@ -8,10 +9,10 @@ import { useState } from "react";
 
 export default function Home() {
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
-
-  const [loader] = useState(true);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { todos, loading, error } = useTodo();
+  
+  const handleClose = () => setIsModalOpen(false);
   console.log("🚀 ~ Home ~ todos:", todos);
 
   return (
@@ -35,7 +36,7 @@ export default function Home() {
           <Button
             variant="contained"
             sx={{ textTransform: "none" }}
-            className={` ${filter === "all" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
+            className={`${filter === "all" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
             onClick={() => setFilter("all")}
           >
             All
@@ -43,7 +44,7 @@ export default function Home() {
           <Button
             variant="contained"
             sx={{ textTransform: "none" }}
-            className={` ${filter === "active" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
+            className={`${filter === "active" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
             onClick={() => setFilter("active")}
           >
             Active
@@ -51,7 +52,7 @@ export default function Home() {
           <Button
             variant="contained"
             sx={{ textTransform: "none" }}
-            className={` ${filter === "completed" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
+            className={`${filter === "completed" ? "bg-white! text-primary! font-semibold!" : "bg-transparent! text-black/50!"}`}
             onClick={() => setFilter("completed")}
           >
             Completed
@@ -62,7 +63,8 @@ export default function Home() {
           variant="contained"
           startIcon={<PlusIcon />}
           sx={{ textTransform: "none" }}
-          className="bg-primary! shadow-none!"
+          className="bg-primary! shadow-none! hover:shadow-sm!"
+          onClick={() => setIsModalOpen(true)}
         >
           Add Task
         </Button>
@@ -82,13 +84,19 @@ export default function Home() {
           </div>
         ) : (
           <div className="flex flex-col gap-4 w-full">
-            <p className="text-xs font-medium text-black/60">You have {todos.length} {todos.length > 1 ? "tasks" : "task"} todo</p>
+            <p className="text-xs font-medium text-black/60">
+              You have {todos.length} {todos.length > 1 ? "tasks" : "task"} todo
+            </p>
             {todos.map((t) => (
               <TodoCard key={t.id} todo={t} />
             ))}
           </div>
         )}
       </div>
+
+
+      {/* MODAL */}
+      <TaskModal open={isModalOpen} onClose={handleClose} />
     </main>
   );
 }
