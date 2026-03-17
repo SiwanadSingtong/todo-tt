@@ -11,7 +11,7 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { Circle, CircleCheck, X } from "lucide-react";
+import { Circle, CircleCheck, Loader2, X } from "lucide-react";
 import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
@@ -155,10 +155,19 @@ function TaskModal({ open, onClose, todo }: TodoModalProps) {
             color: "white",
             fontWeight: 600,
             borderRadius: "8px",
+            minWidth: "120px",
+            minHeight: "36px",
           }}
           onClick={handleSubmit}
+          disabled={saving}
         >
-          {isEdit ? "Update Task" : "Create Task"}
+          {saving ? (
+            <Loader2 size={25} className="animate-spin" />
+          ) : isEdit ? (
+            "Update Task"
+          ) : (
+            "Create Task"
+          )}
         </Button>
       </DialogActions>
     </Dialog>

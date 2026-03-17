@@ -5,6 +5,7 @@ import { useState } from "react";
 import TaskModal from "./ui/TaskModal";
 import DeleteModal from "./ui/DeleteModal";
 import { useTodo } from "@/context/TodoContext";
+import { enqueueSnackbar } from "notistack";
 
 function TodoCard({ todo }: { todo: Todo }) {
   const { deleteTodo } = useTodo();
@@ -18,8 +19,9 @@ function TodoCard({ todo }: { todo: Todo }) {
     try {
       setDeleting(true);
       await deleteTodo(todo.id);
+      enqueueSnackbar("Deleted Successfully", { variant: "success" });
     } catch {
-      // handle error
+      enqueueSnackbar("Failed to delete task", { variant: "error" });
     } finally {
       setDeleting(false);
       setIsDeleteOpen(false);
