@@ -8,7 +8,7 @@ import { useTodo } from "@/context/TodoContext";
 import { enqueueSnackbar } from "notistack";
 
 function TodoCard({ todo }: { todo: Todo }) {
-  const { deleteTodo } = useTodo();
+  const { deleteTodo, updateTodo } = useTodo();
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -30,11 +30,12 @@ function TodoCard({ todo }: { todo: Todo }) {
 
   return (
     <>
-      <Box className="bg-white p-2 rounded-lg flex justify-between items-center group">
+      <Box className="bg-white p-4 rounded-lg flex justify-between items-center group">
         <div className="flex items-center gap-1">
           <Checkbox
             size="small"
-            // checked={todo.completed}
+            checked={todo.completed}
+            onChange={() => updateTodo(todo.id, { completed: !todo.completed})}
             icon={<Circle size={20} />}
             checkedIcon={<CircleCheck size={20} className="text-primary!" />}
           />

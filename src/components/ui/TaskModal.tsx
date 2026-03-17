@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Circle, CircleCheck, Loader2, X } from "lucide-react";
 import { enqueueSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function TaskModal({ open, onClose, todo }: TodoModalProps) {
   const { updateTodo, createTodo } = useTodo();

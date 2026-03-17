@@ -5,10 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
 } from "@mui/material";
 import { Loader2, X } from "lucide-react";
-import React from "react";
 
 function DeleteModal({ open, onClose, loading, onConfirm }: DeleteModalProps) {
   return (
