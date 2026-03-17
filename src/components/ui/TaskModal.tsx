@@ -1,13 +1,15 @@
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   IconButton,
   TextField,
 } from "@mui/material";
-import { X } from "lucide-react";
+import { Circle, CircleCheck, X } from "lucide-react";
 import React from "react";
 
 function TaskModal({ open, onClose }) {
@@ -39,7 +41,7 @@ function TaskModal({ open, onClose }) {
           <label className="font-semibold text-sm">Task Name</label>
           <TextField
             id="TaskName"
-            placeholder="e.g. Design System Update"
+            placeholder="e.g. Watch Game of Thrones"
             fullWidth
             size="small"
             sx={{
@@ -59,6 +61,19 @@ function TaskModal({ open, onClose }) {
               },
               borderRadius: "8px",
             }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                icon={<Circle size={14} />}
+                checkedIcon={
+                  <CircleCheck size={14} className="text-primary!" />
+                }
+              />
+            }
+            label={<p className="text-sm font-semibold">Task is Completed?</p>}
+            className="w-fit"
           />
         </div>
       </DialogContent>
