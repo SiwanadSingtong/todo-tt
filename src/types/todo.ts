@@ -10,3 +10,8 @@ export interface TodoContextType {
   loading: boolean;
   error: string | null;
 }
+
+export interface TodoModalProps {
+  open: boolean;
+  onClose: () => void;
+}

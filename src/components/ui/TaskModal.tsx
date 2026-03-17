@@ -1,3 +1,4 @@
+import { TodoModalProps } from "@/types/todo";
 import {
   Button,
   Checkbox,
@@ -12,7 +13,7 @@ import {
 import { Circle, CircleCheck, X } from "lucide-react";
 import React from "react";
 
-function TaskModal({ open, onClose }) {
+function TaskModal({ open, onClose }: TodoModalProps) {
   return (
     <Dialog
       open={open}
