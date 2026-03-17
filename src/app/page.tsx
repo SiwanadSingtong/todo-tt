@@ -1,15 +1,16 @@
 "use client";
 
 import { Button } from "@mui/material";
-import { PlusIcon } from "lucide-react";
-import Image from "next/image";
+import { ListTodo, PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
+  const [todos] = useState([])
+
   return (
-    <main className="bg-[#f8fafc] h-screen py-12">
+    <main className="py-12 max-w-2xl mx-auto flex flex-col gap-12">
       {/* HEADER */}
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center">
@@ -23,7 +24,7 @@ export default function Home() {
         </div>
       </div>
       {/* FILTERS AND ADD TASK */}
-      <div className="flex items-center gap-56 justify-center mt-8">
+      <div className="flex items-center justify-between">
         {/* Filter */}
         <div className="p-1 w-fit bg-[#f1f5f9] rounded-lg *:shadow-none! *:text-sm! *:transition-all! *:font-medium! *:duration-200! *:rounded-md!">
           <Button
@@ -60,6 +61,15 @@ export default function Home() {
         >
           Add Task
         </Button>
+      </div>
+      {/* TASK */}
+      <div className="flex items-center justify-center">
+        {todos.length === 0 && (
+          <div className="w-full h-56 flex flex-col gap-2 items-center justify-center">
+            <ListTodo size={48} strokeWidth={2.5} className="text-black/40" />
+            <p className="text-md font-medium text-black/90">No tasks yet</p>
+          </div>
+        )}
       </div>
     </main>
   );
